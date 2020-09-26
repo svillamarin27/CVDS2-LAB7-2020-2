@@ -1,3 +1,4 @@
+package edu.eci.cvds.sampleprj.jdbc.example;
 /*
  * Copyright (C) 2015 hcadavid
  *
@@ -14,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package edu.eci.cvds.sampleprj.jdbc.example;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -72,8 +73,8 @@ public class JDBCExample {
     }
     
     /**
-     * Agregar un nuevo producto con los parámetros dados
-     * @param con la conexión JDBC
+     * Agregar un nuevo producto con los parÃ¡metros dados
+     * @param con la conexiÃ³n JDBC
      * @param codigo
      * @param nombre
      * @param precio
@@ -81,7 +82,7 @@ public class JDBCExample {
      */
     public static void registrarNuevoProducto(Connection con, int codigo, String nombre,int precio) throws SQLException{
         //Crear preparedStatement
-        //Asignar parámetros
+        //Asignar parÃ¡metros
         //usar 'execute'
 
         
@@ -91,15 +92,15 @@ public class JDBCExample {
     
     /**
      * Consultar los nombres de los productos asociados a un pedido
-     * @param con la conexión JDBC
-     * @param codigoPedido el código del pedido
+     * @param con la conexiÃ³n JDBC
+     * @param codigoPedido el cÃ³digo del pedido
      * @return 
      */
     public static List<String> nombresProductosPedido(Connection con, int codigoPedido){
         List<String> np=new LinkedList<>();
         
         //Crear prepared statement
-        //asignar parámetros
+        //asignar parÃ¡metros
         //usar executeQuery
         //Sacar resultados del ResultSet
         //Llenar la lista y retornarla
@@ -111,13 +112,13 @@ public class JDBCExample {
     /**
      * Calcular el costo total de un pedido
      * @param con
-     * @param codigoPedido código del pedido cuyo total se calculará
+     * @param codigoPedido cÃ³digo del pedido cuyo total se calcularÃ¡
      * @return el costo total del pedido (suma de: cantidades*precios)
      */
     public static int valorTotalPedido(Connection con, int codigoPedido){
         
         //Crear prepared statement
-        //asignar parámetros
+        //asignar parÃ¡metros
         //usar executeQuery
         //Sacar resultado del ResultSet
         
