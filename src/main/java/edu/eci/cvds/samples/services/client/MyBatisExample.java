@@ -88,9 +88,9 @@ public class MyBatisExample {
         
         cm.agregarItemRentadoACliente(5, 1,date, date2);
         ItemMapper im= sqlss.getMapper(ItemMapper.class);
-        TipoItem tipoIt= new TipoItem(3,"Peliculas");
-        Item it = new Item(tipoIt,9999,"Nuevo Item","Nuevo Item",date,1234, "formato","genero final"); 
-        im.insertarItem(it);
+        //TipoItem tipoIt= new TipoItem(3,"Peliculas");
+        //Item it = new Item(tipoIt,9999,"Nuevo Item","Nuevo Item",date,1234, "formato","genero final"); 
+        //im.insertarItem(it);
         
         System.out.println("--Consulta de items--");
         System.out.println(im.consultarItems());
