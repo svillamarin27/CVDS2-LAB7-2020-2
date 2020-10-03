@@ -17,10 +17,16 @@
 package edu.eci.cvds.samples.services.client;
 
 
-
+import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ClienteMapper;
+import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ItemMapper;
+import edu.eci.cvds.samples.entities.Item;
+import edu.eci.cvds.samples.entities.TipoItem;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -58,16 +64,38 @@ public class MyBatisExample {
      * @throws SQLException 
      */
     public static void main(String args[]) throws SQLException {
-        SqlSessionFactory sessionfact = getSqlSessionFactory();
-
-        SqlSession sqlss = sessionfact.openSession();
+    	SqlSessionFactory sessionfact = getSqlSessionFactory();
+    	SqlSession sqlss = sessionfact.openSession();
 
         
         //Crear el mapper y usarlo: 
         //ClienteMapper cm=sqlss.getMapper(ClienteMapper.class)
         //cm...
+        ClienteMapper cm=sqlss.getMapper(ClienteMapper.class);
+        System.out.println("--Consulta de clientes--");
+        System.out.println(cm.consultarClientes());
+        System.out.println("--Consulta de clientes por ID--");
+        System.out.println(cm.consultarCliente(2));
+        Date date = null;
+        Date date2 = null;
+        try {
+        	date=new SimpleDateFormat("yyyy-MM-dd").parse("2019-03-12");
+            date2=new SimpleDateFormat("yyyy-MM-dd").parse("2019-04-12");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         
         
+        cm.agregarItemRentadoACliente(5, 1,date, date2);
+        ItemMapper im= sqlss.getMapper(ItemMapper.class);
+        TipoItem tipoIt= new TipoItem(3,"Peliculas");
+        Item it = new Item(tipoIt,9999,"Nuevo Item","Nuevo Item",date,1234, "formato","genero final"); 
+        im.insertarItem(it);
+        
+        System.out.println("--Consulta de items--");
+        System.out.println(im.consultarItems());
+        System.out.println("--Consulta de items por ID--");
+        System.out.println(im.consultarItem(9999));
         
         sqlss.commit();
         

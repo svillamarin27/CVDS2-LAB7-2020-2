@@ -33,12 +33,16 @@ import java.util.logging.Logger;
  */
 public class JDBCExample {
     
+	private static final String SQL_INSERT_REGISTRAR_NUEVO_PRODUCTO= "INSERT INTO ORD_PRODUCTOS(codigo, nombre, precio) VALUES (?,?,?)";
+	private static final String SQL_SELECT_NOMBRES_PRODUCTOS_PEDIDOS= "SELECT nombre FROM ORD_PRODUCTOS WHERE codigo = ?";
+	private static final String SQL_SELECT_VALOR_TOTAL_PEDIDO= "SELECT SUM(cantidad*ORD_PRODUCTOS.precio) FROM ORD_DETALLE_PEDIDO,ORD_PRODUCTOS WHERE producto_fk = ORD_PRODUCTOS.codigo && pedido_fk = ?;";
+	
     public static void main(String args[]){
         try {
-            String url="jdbc:mysql://HOST:3306/BD";
+            String url="jdbc:mysql://desarrollo.is.escuelaing.edu.co:3306/bdprueba";
             String driver="com.mysql.jdbc.Driver";
-            String user="USER";
-            String pwd="PWD";
+            String user="bdprueba";
+            String pwd="prueba2019";
                         
             Class.forName(driver);
             Connection con=DriverManager.getConnection(url,user,pwd);
@@ -84,8 +88,14 @@ public class JDBCExample {
         //Crear preparedStatement
         //Asignar parÃ¡metros
         //usar 'execute'
-
-        
+    	PreparedStatement state=null;
+    	state=con.prepareStatement(SQL_INSERT_REGISTRAR_NUEVO_PRODUCTO);
+    	//Contador de columnas.
+    	int index=1;
+    	state.setInt(index++, codigo);
+    	state.setString(index++, nombre);
+    	state.setInt(index++, precio);
+    	System.out.println("Ejecutando linea:"+state);
         con.commit();
         
     }
@@ -104,6 +114,23 @@ public class JDBCExample {
         //usar executeQuery
         //Sacar resultados del ResultSet
         //Llenar la lista y retornarla
+        PreparedStatement state = null;
+        ResultSet result = null;
+        String nombre = null;
+        
+        try {
+        	state = con.prepareStatement(SQL_SELECT_NOMBRES_PRODUCTOS_PEDIDOS);
+        	state.setInt(1, codigoPedido);
+        	result = state.executeQuery();
+        	while(result.next()) {
+        		nombre=result.getString(1);
+        		np.add(nombre);
+        	}
+        }
+        catch(SQLException e) {
+        	e.printStackTrace();
+        }
+        
         
         return np;
     }
@@ -121,8 +148,19 @@ public class JDBCExample {
         //asignar parÃ¡metros
         //usar executeQuery
         //Sacar resultado del ResultSet
-        
-        return 0;
+    	PreparedStatement state = null;
+        ResultSet result = null;
+        int ValorTotal=0;
+        try {
+        	state=con.prepareStatement(SQL_SELECT_VALOR_TOTAL_PEDIDO);
+        	state.setInt(1, codigoPedido);
+        	result=state.executeQuery();
+        	while(result.next()) ValorTotal+=result.getInt(1);
+        }
+        catch(SQLException e) {
+        	e.printStackTrace();
+        }
+        return ValorTotal;
     }
     
 
